@@ -1,0 +1,57 @@
+# This is for making a Rust toolchain that is useful for building crates such that they link to
+# std libs that are better for debugger'ing the std libs themselves because these from this
+# toolchain have more debug-info, less optimizations, and file+line info referring to the files in
+# the rust-lang/rust.git repo checkout that this toolchain is made from which helps rust-analyzer
+# (along with my extra ./.dir-locals.el for my Emacs support) better understand and navigate the
+# std libs source code.
+
+# Remember: Have these env vars for the `./x build && ./x install`, etc commands:
+#             RUSTFLAGS="-C target-cpu=native"
+#             RUSTFLAGS_BOOTSTRAP="-C opt-level=3 -C debuginfo=0"
+#             RUSTFLAGS_NOT_BOOTSTRAP="-Z tune-cpu=native -C inline-threshold=0"
+#           Which ./shell.nix sets up.
+
+change-id = 127866  # This will need to be updated in the future.
+
+[llvm]
+download-ci-llvm = false  # Want to use the host's libLLVM, instead.
+link-shared = true  # Needed to use the NixOS host's libLLVM. (The .a LLVM libs don't work.)
+
+[build]
+# verbose = 1
+# extended = true  # Also build the tools (e.g. cargo, clippy, rust-analyzer, etc.).
+# tools = [
+#    "cargo",
+#  # "clippy",
+#  # "rustfmt",
+#    "rust-analyzer",
+#    "rust-analyzer-proc-macro-srv",
+#  # "src",
+# ]
+low-priority = true  # "Nice" +10.
+docs = false  # Faster total build without these.
+# build-dir = "/var/tmp/home/z/rust-lang/build"
+
+[rust]
+download-rustc = false  # This is the default. Just to be explicit that we want to build it.
+channel = "stable"  # Build a "stable"-channel Rust (i.e. that can't use unstable features).
+debug = true  # Build as debug mode, for using debugger to explore the std libs.
+frame-pointers = true  # Might help fidelity of debugging.
+optimize = false  # No optimizations, to help fidelity of debugging.
+optimize-tests = false  # Might as well.
+debug-assertions = false  # Not worried about correctness of compiler, nor std libs, nor tools.
+overflow-checks = false   # Ditto.
+debug-logging = false  # Don't care about traces.
+debuginfo-level = 0  # Don't care about debug info for compiler nor tools.
+debuginfo-level-std = 2  # Full debug info with variable and type information, only for std libs.
+incremental = false  # Faster initial build. (I don't plan to make changes.)
+lto = "off"  # Faster to build, at the expense of a ~20% runtime slowdown.
+dist-src = false  # Don't need this.
+
+[target.x86_64-unknown-linux-gnu]
+# To use the host system's LLVM (instead of building it) (will need to be updated in the future):
+llvm-config = "/nix/store/h5rmkyjx7xpi0839pay5frl46bxpjc90-llvm-18.1.8-dev/bin/llvm-config"
+
+[install]
+prefix = "/home/z/.rustup/toolchains/my-debug-std"
+sysconfdir = "etc"

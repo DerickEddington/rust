@@ -597,7 +597,7 @@ pub mod time;
 
 // Pull in `std_float` crate  into std. The contents of
 // `std_float` are in a different repository: rust-lang/portable-simd.
-#[path = "../../portable-simd/crates/std_float/src/lib.rs"]
+#[path = "./std_float/src/lib.rs"]
 #[allow(missing_debug_implementations, dead_code, unsafe_op_in_unsafe_fn)]
 #[allow(rustdoc::bare_urls)]
 #[unstable(feature = "portable_simd", issue = "86656")]
@@ -605,7 +605,7 @@ mod std_float;
 
 #[unstable(feature = "portable_simd", issue = "86656")]
 pub mod simd {
-    #![doc = include_str!("../../portable-simd/crates/core_simd/src/core_simd_docs.md")]
+    #![doc = include_str!("./core_simd/src/core_simd_docs.md")]
 
     #[doc(inline)]
     pub use crate::std_float::StdFloat;
@@ -626,7 +626,7 @@ pub mod task {
     pub use alloc::task::*;
 }
 
-#[doc = include_str!("../../stdarch/crates/core_arch/src/core_arch_docs.md")]
+#[doc = include_str!("./core_arch/src/core_arch_docs.md")]
 #[stable(feature = "simd_arch", since = "1.27.0")]
 pub mod arch {
     #[stable(feature = "simd_arch", since = "1.27.0")]
@@ -664,7 +664,7 @@ pub mod alloc;
 // Private support modules
 mod panicking;
 
-#[path = "../../backtrace/src/lib.rs"]
+#[path = "./backtrace/src/lib.rs"]
 #[allow(dead_code, unused_attributes, fuzzy_provenance_casts, unsafe_op_in_unsafe_fn)]
 mod backtrace_rs;
 
@@ -701,7 +701,7 @@ pub use core::primitive;
 // Include a number of private modules that exist solely to provide
 // the rustdoc documentation for primitive types. Using `include!`
 // because rustdoc only looks for these modules at the crate level.
-include!("../../core/src/primitive_docs.rs");
+include!("./core/src/primitive_docs.rs");
 
 // Include a number of private modules that exist solely to provide
 // the rustdoc documentation for the existing keywords. Using `include!`

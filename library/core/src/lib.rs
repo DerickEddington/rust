@@ -430,7 +430,7 @@ pub mod primitive;
 // `core_arch` depends on core, but the contents of this module are
 // set up in such a way that directly pulling it here works such that the
 // crate uses the this crate as its core.
-#[path = "../../stdarch/crates/core_arch/src/mod.rs"]
+#[path = "./core_arch/src/mod.rs"]
 #[allow(
     missing_docs,
     missing_debug_implementations,
@@ -452,7 +452,7 @@ pub mod arch;
 // `core_simd` depends on core, but the contents of this module are
 // set up in such a way that directly pulling it here works such that the
 // crate uses this crate as its core.
-#[path = "../../portable-simd/crates/core_simd/src/mod.rs"]
+#[path = "./core_simd/src/mod.rs"]
 #[allow(missing_debug_implementations, dead_code, unsafe_op_in_unsafe_fn)]
 #[allow(rustdoc::bare_urls)]
 #[unstable(feature = "portable_simd", issue = "86656")]
@@ -460,7 +460,7 @@ mod core_simd;
 
 #[unstable(feature = "portable_simd", issue = "86656")]
 pub mod simd {
-    #![doc = include_str!("../../portable-simd/crates/core_simd/src/core_simd_docs.md")]
+    #![doc = include_str!("./core_simd/src/core_simd_docs.md")]
 
     #[unstable(feature = "portable_simd", issue = "86656")]
     pub use crate::core_simd::simd::*;
